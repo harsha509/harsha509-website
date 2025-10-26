@@ -1,4 +1,3 @@
-import { useState } from "react";
 import NeuralBackground from "./components/NeuralBackground";
 
 type PortfolioItem = { title: string; image?: string; link?: string; };
@@ -34,8 +33,6 @@ function Pill({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const [email, setEmail] = useState("");
-
   return (
     <>
       <NeuralBackground />

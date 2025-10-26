@@ -69,7 +69,7 @@ export default function App() {
                 <div className="mt-3 flex items-center gap-3 animate-in">
                   <span className="text-sm uppercase tracking-widest text-[--color-muted]">at</span>
                   <img
-                    src="/lt/25px.svg"
+                    src={`${import.meta.env.BASE_URL}lt/25px.svg`}
                     alt="LambdaTest logo"
                     className="h-8 border-0 ring-0 outline-none shadow-none"
                     style={{ clipPath: 'inset(2px)' }}
@@ -80,7 +80,7 @@ export default function App() {
                 <div className="neural-bg rounded-2xl"></div>
                 <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white shadow-2xl animate-in-delayed">
                   <img
-                    src="/sri.jpg"
+                    src={`${import.meta.env.BASE_URL}sri.jpg`}
                     alt="Sri Harsha portrait"
                     className="h-full w-full object-cover"
                     loading="eager"

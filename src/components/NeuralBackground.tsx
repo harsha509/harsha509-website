@@ -27,9 +27,9 @@ export default function NeuralBackground() {
     window.addEventListener('resize', resizeCanvas);
 
     // Particle configuration
-    const particleCount = 80;
+    const particleCount = 50;
     const particles: Particle[] = [];
-    const connectionDistance = 150;
+    const connectionDistance = 200;
     const maxConnections = 3;
 
     // Initialize particles
@@ -37,9 +37,9 @@ export default function NeuralBackground() {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        radius: Math.random() * 2 + 1,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: (Math.random() - 0.5) * 0.8,
+        radius: Math.random() * 2.5 + 1.5,
       });
     }
 
@@ -65,7 +65,7 @@ export default function NeuralBackground() {
         // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(37, 99, 235, 0.8)';
+        ctx.fillStyle = 'rgba(37, 99, 235, 0.3)';
         ctx.fill();
 
         // Draw connections
@@ -78,12 +78,12 @@ export default function NeuralBackground() {
 
           if (distance < connectionDistance) {
             connections++;
-            const opacity = (1 - distance / connectionDistance) * 0.5;
+            const opacity = (1 - distance / connectionDistance) * 0.8;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(other.x, other.y);
             ctx.strokeStyle = `rgba(37, 99, 235, ${opacity})`;
-            ctx.lineWidth = 1.5;
+            ctx.lineWidth = 2;
             ctx.stroke();
           }
         }
@@ -104,7 +104,7 @@ export default function NeuralBackground() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none"
-      style={{ zIndex: 2 }}
+      style={{ zIndex: 1 }}
     />
   );
 }

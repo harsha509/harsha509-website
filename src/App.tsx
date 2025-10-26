@@ -60,7 +60,7 @@ export default function App() {
 
       <main id="home">
         {/* Hero */}
-        <section className="bg-white/95 bg-grid">
+        <section className="bg-white/70 bg-grid">
           <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
             <div className="grid items-center gap-12 md:grid-cols-[1fr_1.2fr]">
               <div>
@@ -96,7 +96,7 @@ export default function App() {
         </section>
 
         {/* About */}
-        <section id="about" className="bg-white/95 border-t border-black/5">
+        <section id="about" className="bg-white/70 border-t border-black/5">
           <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
             <SectionHeading eyebrow="about" title="About me" />
             <p className="max-w-3xl text-[--color-accent] text-justify">
@@ -115,7 +115,7 @@ export default function App() {
         </section>
 
         {/* Portfolio */}
-        <section id="projects" className="bg-white/95 border-t border-black/5">
+        <section id="projects" className="bg-white/70 border-t border-black/5">
           <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
             <div className="flex items-end justify-between gap-4">
               <SectionHeading eyebrow="projects" title="GitHub projects I contribute to" />
@@ -152,7 +152,7 @@ export default function App() {
         </section>
 
         {/* Quote */}
-        <section className="bg-white/95">
+        <section className="bg-white/70">
           <div className="mx-auto max-w-4xl px-4 py-16 md:py-24 text-center">
             <div className="uppercase tracking-widest text-sm text-[--color-muted] mb-2">quote of the day</div>
             <blockquote className="text-2xl md:text-3xl font-semibold leading-relaxed">
@@ -164,7 +164,7 @@ export default function App() {
 
 
         {/* Blogs */}
-        <section id="blogs" className="bg-white/95 border-t border-black/5">
+        <section id="blogs" className="bg-white/70 border-t border-black/5">
           <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
             <div className="flex items-end justify-between gap-4">
               <SectionHeading eyebrow="blogs" title="latest news" />

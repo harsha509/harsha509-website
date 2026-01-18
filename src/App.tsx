@@ -69,10 +69,9 @@ export default function App() {
                 <div className="mt-3 flex items-center gap-3 animate-in">
                   <span className="text-sm uppercase tracking-widest text-[--color-muted]">at</span>
                   <img
-                    src={`${import.meta.env.BASE_URL}lt/25px.svg`}
+                    src={`${import.meta.env.BASE_URL}lt/logo.svg`}
                     alt="LambdaTest logo"
                     className="h-8 border-0 ring-0 outline-none shadow-none"
-                    style={{ clipPath: 'inset(2px)' }}
                   />
                 </div>
               </div>

@@ -43,14 +43,6 @@ export default function App() {
   return (
     <>
       <NeuralBackground />
-      <div
-        className="fixed inset-0 pointer-events-none overflow-hidden"
-        style={{ zIndex: 0, opacity: 'var(--orb-opacity)' }}
-      >
-        <div className="orb orb-1"></div>
-        <div className="orb orb-2"></div>
-        <div className="orb orb-3"></div>
-      </div>
 
       <header className="sticky top-0 z-40 bg-[--color-header-bg] backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
@@ -67,7 +59,7 @@ export default function App() {
 
       <main id="home">
         {/* Hero */}
-        <section className="bg-[--color-surface] bg-grid">
+        <section className="bg-[--color-surface]">
           <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
             <div className="grid items-center gap-12 md:grid-cols-[1fr_1.2fr]">
               <div>

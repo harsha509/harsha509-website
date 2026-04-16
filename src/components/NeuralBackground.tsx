@@ -18,7 +18,6 @@ export default function NeuralBackground() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -26,13 +25,11 @@ export default function NeuralBackground() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Particle configuration
     const particleCount = 50;
     const particles: Particle[] = [];
     const connectionDistance = 200;
     const maxConnections = 3;
 
-    // Initialize particles
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
@@ -43,32 +40,30 @@ export default function NeuralBackground() {
       });
     }
 
-    // Animation loop
-    let animationFrameId: number;
+    let animationFrameId = 0;
+
+    const particleColor = 'rgba(96, 165, 250, 0.5)';
+    const lineRgb = '96, 165, 250';
+    const lineOpacityMax = 0.25;
+
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw particles
       particles.forEach((particle, i) => {
-        // Update position
         particle.x += particle.vx;
         particle.y += particle.vy;
 
-        // Bounce off edges
         if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
         if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
 
-        // Keep particles in bounds
         particle.x = Math.max(0, Math.min(canvas.width, particle.x));
         particle.y = Math.max(0, Math.min(canvas.height, particle.y));
 
-        // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(37, 99, 235, 0.3)';
+        ctx.fillStyle = particleColor;
         ctx.fill();
 
-        // Draw connections
         let connections = 0;
         for (let j = i + 1; j < particles.length && connections < maxConnections; j++) {
           const other = particles[j];
@@ -78,11 +73,11 @@ export default function NeuralBackground() {
 
           if (distance < connectionDistance) {
             connections++;
-            const opacity = (1 - distance / connectionDistance) * 0.8;
+            const opacity = (1 - distance / connectionDistance) * lineOpacityMax;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(other.x, other.y);
-            ctx.strokeStyle = `rgba(37, 99, 235, ${opacity})`;
+            ctx.strokeStyle = `rgba(${lineRgb}, ${opacity})`;
             ctx.lineWidth = 2;
             ctx.stroke();
           }

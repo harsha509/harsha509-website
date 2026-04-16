@@ -1,0 +1,96 @@
+---
+title: "Hello, AI space — a template for this blog"
+date: "2026-04-16"
+category: "Meta"
+excerpt: "A quick walkthrough of the blog's writing template — headings, images, video, code and callouts — so every future post lands with the same polish."
+tags: ["Meta", "AI", "Writing"]
+readingMinutes: 4
+---
+
+Welcome to the AI-space corner of this site. This first post is intentionally a
+**template** — it shows every building block available to any future post. Copy
+it, change the frontmatter, replace the content, and ship.
+
+## What you can write with
+
+Everything here is just **MDX** — Markdown plus a handful of React components
+that keep the styling consistent across posts.
+
+### Prose, the way you'd expect
+
+You get **bold**, _italics_, `inline code`, [links](https://react.dev),
+bulleted lists, numbered lists, tables, and block quotes. Nothing fancy:
+
+- Use Markdown for 90 % of the text.
+- Reach for JSX components when you need rich media or callouts.
+- Keep paragraphs short. Respect the reader's time.
+
+> "Any fool can write code that a computer can understand. Good programmers
+> write code that humans can understand." — Martin Fowler
+
+### Code with syntax highlighting
+
+Fenced code blocks get highlighted at **build time** (no runtime JS cost):
+
+```ts
+type Agent = {
+  name: string;
+  tools: string[];
+  run: (prompt: string) => Promise<string>;
+};
+
+async function chain(agents: Agent[], input: string) {
+  let output = input;
+  for (const agent of agents) {
+    output = await agent.run(output);
+  }
+  return output;
+}
+```
+
+### Images
+
+Use `<Figure />` for any picture that deserves a caption:
+
+<Figure
+  src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80&auto=format&fit=crop"
+  alt="A neural network visualisation in blue and purple tones"
+  caption="Figure 1 — illustrative cover image courtesy of Unsplash."
+/>
+
+Or drop a plain Markdown image and it'll still render nicely:
+
+![A wireframe brain graphic](https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=80&auto=format&fit=crop)
+
+### Video
+
+Either upload an MP4 to `public/blog/<slug>/clip.mp4` and use `<Video />`:
+
+{/* <Video src="/blog/hello-ai-space/demo.mp4" poster="/blog/hello-ai-space/poster.jpg" /> */}
+
+...or embed a YouTube video privacy-friendly:
+
+<YouTube id="dQw4w9WgXcQ" title="Demo video" caption="Any YouTube ID works; cookies are off by default." />
+
+### Callouts
+
+Use callouts sparingly, for real asides:
+
+<Callout variant="info" title="Heads up">
+  This is an informational callout — good for context the reader can skip.
+</Callout>
+
+<Callout variant="tip" title="Pro tip">
+  Prefer small, frequent posts over giant comprehensive ones. Momentum &gt; perfection.
+</Callout>
+
+<Callout variant="warn" title="Careful">
+  Anything time-sensitive (model versions, API shapes) will rot fast. Date the post clearly.
+</Callout>
+
+## That's it
+
+Copy this file, rename it to `YYYY-MM-DD-your-slug.mdx`, swap out the
+frontmatter and body, and you're live the moment the build finishes.
+
+Happy writing.

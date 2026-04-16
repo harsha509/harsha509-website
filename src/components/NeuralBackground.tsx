@@ -23,15 +23,24 @@ export default function NeuralBackground() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mousePosRef = useRef({ x: 0, y: 0 });
+  const isHoveringRef = useRef(false);
 
-  // Mouse tracking for the spotlight
+  // Mouse tracking for the spotlight and AI interaction
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePos({ x: e.clientX, y: e.clientY });
-      if (!isHovering) setIsHovering(true);
+      mousePosRef.current = { x: e.clientX, y: e.clientY };
+      if (!isHovering) {
+        setIsHovering(true);
+        isHoveringRef.current = true;
+      }
     };
     
-    const handleMouseLeave = () => setIsHovering(false);
+    const handleMouseLeave = () => {
+      setIsHovering(false);
+      isHoveringRef.current = false;
+    };
 
     window.addEventListener('mousemove', handleMouseMove);
     document.body.addEventListener('mouseleave', handleMouseLeave);
@@ -162,6 +171,25 @@ export default function NeuralBackground() {
               score++;
               if (score > 15) break; // Max lookahead
             }
+
+            // Mouse Interaction: If mouse is nearby, boost the score of the direction pointing TOWARD the mouse
+            if (isHoveringRef.current && score > 0) {
+              const mPos = mousePosRef.current;
+              const distToMouse = Math.hypot(cycle.x - mPos.x, cycle.y - mPos.y);
+              
+              // If mouse is within 250px, act like a laser pointer
+              if (distToMouse < 250) {
+                const nextX = cycle.x + Math.sign(dir.vx) * CELL_SIZE;
+                const nextY = cycle.y + Math.sign(dir.vy) * CELL_SIZE;
+                const newDistToMouse = Math.hypot(nextX - mPos.x, nextY - mPos.y);
+                
+                // If this direction moves the cycle closer to the mouse, give it a massive score boost
+                if (newDistToMouse < distToMouse) {
+                  score += 100;
+                }
+              }
+            }
+
             return { dir, score };
           });
 

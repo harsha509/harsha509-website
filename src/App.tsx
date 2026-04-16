@@ -24,8 +24,8 @@ const navLinkClass =
 function SectionHeading({ eyebrow, title, subtitle }: { eyebrow?: string; title: string; subtitle?: string }) {
   return (
     <div className="mb-8">
-      {eyebrow && <div className="uppercase tracking-widest text-base text-[--color-muted] mb-2">{eyebrow}</div>}
-      <h2 className="text-4xl md:text-5xl font-bold font-[var(--font-heading)] tracking-tight">{title}</h2>
+      {eyebrow && <div className="uppercase tracking-widest text-sm text-[--color-muted] mb-2">{eyebrow}</div>}
+      <h2 className="text-3xl md:text-4xl font-bold font-[var(--font-heading)] tracking-tight">{title}</h2>
       {subtitle && <p className="text-[--color-muted] mt-2 max-w-2xl">{subtitle}</p>}
     </div>
   );
@@ -33,7 +33,7 @@ function SectionHeading({ eyebrow, title, subtitle }: { eyebrow?: string; title:
 
 function Pill({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex items-center rounded-full border border-[--color-pill-border] bg-[--color-pill-bg] px-4 py-2 text-base text-[--color-accent] shadow-sm">
+    <span className="inline-flex items-center rounded-full border border-[--color-pill-border] bg-[--color-pill-bg] px-4 py-2 text-sm text-[--color-accent] shadow-sm">
       {children}
     </span>
   );
@@ -46,8 +46,8 @@ export default function App() {
 
       <header className="sticky top-0 z-40 bg-[--color-header-bg] backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-          <a href="#home" className="link-hover-line w-fit text-2xl font-extrabold tracking-tight transition-colors hover:text-[--color-secondary] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[--color-secondary]">Sri Harsha</a>
-          <nav className="hidden gap-6 text-base font-medium md:flex">
+          <a href="#home" className="link-hover-line w-fit text-xl font-extrabold tracking-tight transition-colors hover:text-[--color-secondary] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[--color-secondary]">Sri Harsha</a>
+          <nav className="hidden gap-6 text-sm font-medium md:flex">
             <a href="#home" className={navLinkClass}>Home</a>
             <a href="#about" className={navLinkClass}>About</a>
             <a href="#projects" className={navLinkClass}>GitHub Projects</a>
@@ -63,19 +63,19 @@ export default function App() {
           <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
             <div className="grid items-center gap-12 md:grid-cols-[1fr_1.2fr]">
               <div>
-                <div className="mb-6 inline-flex rounded-full border border-[--color-border] bg-[--color-pill-bg] px-5 py-2 text-base uppercase tracking-widest text-[--color-muted] animate-in">
+                <div className="mb-6 inline-flex rounded-full border border-[--color-border] bg-[--color-pill-bg] px-5 py-2 text-sm uppercase tracking-widest text-[--color-muted] animate-in">
                   Hi, I'm
                 </div>
-                <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight font-[var(--font-heading)] uppercase animate-in whitespace-nowrap">SRI HARSHA</h1>
+                <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-[var(--font-heading)] uppercase animate-in whitespace-nowrap">SRI HARSHA</h1>
                 <div className="mt-4 h-1.5 w-32 rounded-full bg-[--color-secondary]/80 animate-in"></div>
-                <p className="mt-6 text-2xl md:text-3xl text-[--color-secondary] font-semibold animate-in">Engineering Manager - OSPO</p>
+                <p className="mt-6 text-xl md:text-2xl text-[--color-secondary] font-medium animate-in">Engineering Manager - OSPO</p>
                 <div className="mt-4 flex items-center gap-4 animate-in">
-                  <span className="text-base uppercase tracking-widest text-[--color-muted] md:text-lg">at</span>
+                  <span className="text-sm uppercase tracking-widest text-[--color-muted] md:text-base">at</span>
                   <span className="hero-employer-logo">
                     <img
                       src={`${import.meta.env.BASE_URL}testmu-logo-white.png`}
                       alt="TestMu AI logo"
-                      className="h-14 w-auto border-0 ring-0 outline-none shadow-none sm:h-16 md:h-20"
+                      className="h-10 w-auto border-0 ring-0 outline-none shadow-none sm:h-12 md:h-14"
                     />
                   </span>
                 </div>
@@ -99,10 +99,10 @@ export default function App() {
         <section id="about" className="bg-[--color-surface]">
           <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
             <SectionHeading eyebrow="about" title="About me" />
-            <p className="max-w-3xl text-lg leading-relaxed text-[--color-accent] text-justify">
+            <p className="max-w-3xl text-base leading-relaxed text-[--color-accent] text-justify">
               Over the years, I've worked on making test suites trustworthy and fast — from browser to mobile — with a strong focus on JavaScript tooling. I actively contribute to opensource projects as a committer to Selenium and WebdriverIO, and participate in SeleniumHQ's Technical Leadership Committee.
             </p>
-            <p className="mt-4 max-w-3xl text-lg leading-relaxed text-[--color-accent] text-justify">
+            <p className="mt-4 max-w-3xl text-base leading-relaxed text-[--color-accent] text-justify">
               Currently serving as an Engineering Manager (OSPO) at LambdaTest, I continue to explore better ways to build, test, and collaborate in the opensource ecosystem.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -137,9 +137,9 @@ export default function App() {
                     ) : null}
                   </div>
                   <div className="p-4 flex items-center justify-between">
-                    <h3 className="text-lg font-semibold">{item.title}</h3>
+                    <h3 className="text-base font-semibold">{item.title}</h3>
                     {item.link ? (
-                      <a href={item.link} target="_blank" rel="noopener noreferrer" className="link-hover-line w-fit text-base text-[--color-secondary] transition-colors">
+                      <a href={item.link} target="_blank" rel="noopener noreferrer" className="link-hover-line w-fit text-sm text-[--color-secondary] transition-colors">
                         GitHub
                       </a>
                     ) : null}
@@ -153,8 +153,8 @@ export default function App() {
         {/* Quote */}
         <section className="bg-[--color-surface]">
           <div className="mx-auto max-w-4xl px-4 py-16 md:py-24 text-center">
-            <div className="uppercase tracking-widest text-base text-[--color-muted] mb-2">quote of the day</div>
-            <blockquote className="text-2xl md:text-3xl font-semibold leading-relaxed">
+            <div className="uppercase tracking-widest text-sm text-[--color-muted] mb-2">quote of the day</div>
+            <blockquote className="text-xl md:text-2xl font-semibold leading-relaxed">
               "Success is not final; failure is not fatal: it is the courage to continue that counts."
             </blockquote>
             <p className="mt-4 text-[--color-muted]">-Winston Churchill</p>
@@ -179,10 +179,10 @@ export default function App() {
                   rel="noopener noreferrer"
                   className="group rounded-lg border border-[--color-border] bg-[--color-card-bg] p-5 shadow-sm hover:shadow-md transition hover:-translate-y-0.5"
                 >
-                  <div className="text-sm uppercase tracking-widest text-[--color-muted]">
+                  <div className="text-xs uppercase tracking-widest text-[--color-muted]">
                     {b.category} &nbsp;/&nbsp; {b.date}
                   </div>
-                  <h3 className="mt-3 text-lg font-semibold leading-snug group-hover:text-[--color-secondary] transition">{b.title}</h3>
+                  <h3 className="mt-3 text-base font-semibold leading-snug group-hover:text-[--color-secondary] transition">{b.title}</h3>
                 </a>
               ))}
             </div>
@@ -195,7 +195,7 @@ export default function App() {
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2 md:gap-16 lg:gap-24">
             <div>
               <p className="m-0 text-xs font-semibold uppercase tracking-[0.22em] text-[--color-muted]">On this site</p>
-              <nav aria-label="Footer site links" className="mt-5 flex max-w-md flex-col gap-3 text-base text-[--color-accent]">
+              <nav aria-label="Footer site links" className="mt-5 flex max-w-md flex-col gap-3 text-sm text-[--color-accent]">
                 <a href="#home" className={footerSiteLinkClass}>Home</a>
                 <a href="#about" className={footerSiteLinkClass}>About</a>
                 <a href="#projects" className={footerSiteLinkClass}>GitHub Projects</a>
@@ -208,7 +208,7 @@ export default function App() {
               <ul className="mt-5 flex flex-col gap-4 p-0 list-none">
                 <li>
                   <a
-                    className="link-hover-line group inline-flex w-fit items-center gap-3 text-base text-[--color-accent] transition-colors hover:text-[--color-secondary]"
+                    className="link-hover-line group inline-flex w-fit items-center gap-3 text-sm text-[--color-accent] transition-colors hover:text-[--color-secondary]"
                     href="https://github.com/harsha509"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -223,7 +223,7 @@ export default function App() {
                 </li>
                 <li>
                   <a
-                    className="link-hover-line group inline-flex w-fit items-center gap-3 text-base text-[--color-accent] transition-colors hover:text-[--color-secondary]"
+                    className="link-hover-line group inline-flex w-fit items-center gap-3 text-sm text-[--color-accent] transition-colors hover:text-[--color-secondary]"
                     href="https://www.linkedin.com/in/sriharsha509/"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -240,7 +240,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="mt-12 border-t border-white/10 pt-8 text-base text-[--color-muted]">
+          <div className="mt-12 border-t border-white/10 pt-8 text-sm text-[--color-muted]">
             <p className="m-0">&copy; {new Date().getFullYear()} Sri Harsha</p>
           </div>
         </div>

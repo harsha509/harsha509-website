@@ -10,9 +10,9 @@
   --color-muted: #94a3b8;
   --color-body: #e2e8f0;
   --color-bg: #0a0f1e;
-  --color-surface: rgba(15, 23, 42, 0.65);
+  --color-surface: #0f172a;
   --color-surface-solid: #111827;
-  --color-card-bg: rgba(17, 24, 39, 0.8);
+  --color-card-bg: #111827;
   --color-border: transparent;
   --color-pill-bg: rgba(30, 41, 59, 0.8);
   --color-pill-border: rgba(148, 163, 184, 0.15);

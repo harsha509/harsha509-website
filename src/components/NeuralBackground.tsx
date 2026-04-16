@@ -6,6 +6,7 @@ interface Point {
 }
 
 interface Cycle {
+  id: number;
   x: number;
   y: number;
   vx: number;
@@ -14,6 +15,8 @@ interface Cycle {
   color: string;
   history: Point[];
   maxLength: number;
+  isDead: boolean;
+  respawnTimer: number;
 }
 
 export default function NeuralBackground() {
@@ -60,109 +63,134 @@ export default function NeuralBackground() {
     const snap = (val: number) => Math.floor(val / CELL_SIZE) * CELL_SIZE;
 
     const cycles: Cycle[] = [
-      {
-        x: snap(canvas.width * 0.2),
-        y: snap(canvas.height * 0.2),
-        speed: 1,
-        vx: 1,
-        vy: 0,
-        color: '#38bdf8', // Cyan
-        history: [],
-        maxLength: 300,
-      },
-      {
-        x: snap(canvas.width * 0.8),
-        y: snap(canvas.height * 0.8),
-        speed: 1,
-        vx: -1,
-        vy: 0,
-        color: '#fbbf24', // Golden
-        history: [],
-        maxLength: 300,
-      },
-      {
-        x: snap(canvas.width * 0.2),
-        y: snap(canvas.height * 0.8),
-        speed: 1,
-        vx: 0,
-        vy: -1,
-        color: '#c084fc', // Magenta
-        history: [],
-        maxLength: 300,
-      },
-      {
-        x: snap(canvas.width * 0.8),
-        y: snap(canvas.height * 0.2),
-        speed: 1,
-        vx: 0,
-        vy: 1,
-        color: '#4ade80', // Green
-        history: [],
-        maxLength: 300,
-      }
+      { id: 0, x: snap(canvas.width * 0.2), y: snap(canvas.height * 0.2), speed: 1, vx: 1, vy: 0, color: '#38bdf8', history: [], maxLength: 300, isDead: false, respawnTimer: 0 },
+      { id: 1, x: snap(canvas.width * 0.8), y: snap(canvas.height * 0.8), speed: 1, vx: -1, vy: 0, color: '#fbbf24', history: [], maxLength: 300, isDead: false, respawnTimer: 0 },
+      { id: 2, x: snap(canvas.width * 0.2), y: snap(canvas.height * 0.8), speed: 1, vx: 0, vy: -1, color: '#c084fc', history: [], maxLength: 300, isDead: false, respawnTimer: 0 },
+      { id: 3, x: snap(canvas.width * 0.8), y: snap(canvas.height * 0.2), speed: 1, vx: 0, vy: 1, color: '#4ade80', history: [], maxLength: 300, isDead: false, respawnTimer: 0 }
     ];
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Build occupied grid for AI lookahead
+      const occupiedGrid = new Set<string>();
+      cycles.forEach(c => {
+        if (c.isDead) return;
+        c.history.forEach(p => {
+          occupiedGrid.add(`${Math.floor(p.x / CELL_SIZE)},${Math.floor(p.y / CELL_SIZE)}`);
+        });
+      });
+
+      const maxX = Math.floor(canvas.width / CELL_SIZE) * CELL_SIZE;
+      const maxY = Math.floor(canvas.height / CELL_SIZE) * CELL_SIZE;
+
       cycles.forEach(cycle => {
+        if (cycle.isDead) {
+          cycle.respawnTimer--;
+          if (cycle.respawnTimer <= 0) {
+            // Respawn at a random grid point
+            let rx = snap(Math.random() * (canvas.width - CELL_SIZE * 4) + CELL_SIZE * 2);
+            let ry = snap(Math.random() * (canvas.height - CELL_SIZE * 4) + CELL_SIZE * 2);
+            cycle.x = rx;
+            cycle.y = ry;
+            const dirs = [{vx: cycle.speed, vy: 0}, {vx: -cycle.speed, vy: 0}, {vx: 0, vy: cycle.speed}, {vx: 0, vy: -cycle.speed}];
+            const dir = dirs[Math.floor(Math.random() * dirs.length)];
+            cycle.vx = dir.vx;
+            cycle.vy = dir.vy;
+            cycle.history = [];
+            cycle.isDead = false;
+          }
+          return;
+        }
+
         // Move the cycle
         cycle.x += cycle.vx;
         cycle.y += cycle.vy;
         cycle.history.push({ x: cycle.x, y: cycle.y });
         
-        // Keep trail at max length
+        // Keep trail at max length to prevent infinite clutter
         if (cycle.history.length > cycle.maxLength) {
           cycle.history.shift();
         }
 
-        // Turning logic: Only allow turns exactly on grid intersections
-        if (cycle.x % CELL_SIZE === 0 && cycle.y % CELL_SIZE === 0) {
-          const wantsToTurn = Math.random() < 0.10; // 10% chance to turn at any intersection (reduced so they go straight longer)
-          
-          let possibleDirs: number[] = [];
-          if (cycle.vx !== 0) {
-            // Moving horizontally, check if we can go up or down
-            if (cycle.y > 0) possibleDirs.push(-cycle.speed); // Up
-            if (cycle.y < canvas.height - CELL_SIZE) possibleDirs.push(cycle.speed); // Down
-          } else {
-            // Moving vertically, check if we can go left or right
-            if (cycle.x > 0) possibleDirs.push(-cycle.speed); // Left
-            if (cycle.x < canvas.width - CELL_SIZE) possibleDirs.push(cycle.speed); // Right
-          }
-
-          // Force a turn if we are about to hit the edge of the screen
-          const hittingEdge = 
-            (cycle.vx > 0 && cycle.x >= canvas.width - CELL_SIZE) ||
-            (cycle.vx < 0 && cycle.x <= 0) ||
-            (cycle.vy > 0 && cycle.y >= canvas.height - CELL_SIZE) ||
-            (cycle.vy < 0 && cycle.y <= 0);
-
-          if (hittingEdge || wantsToTurn) {
-            if (possibleDirs.length > 0) {
-              // Pick a random valid orthogonal direction
-              const newDir = possibleDirs[Math.floor(Math.random() * possibleDirs.length)];
-              if (cycle.vx !== 0) {
-                cycle.vx = 0;
-                cycle.vy = newDir;
-              } else {
-                cycle.vy = 0;
-                cycle.vx = newDir;
+        // Collision Check (Death)
+        let died = false;
+        if (cycle.x <= 0 || cycle.x >= maxX || cycle.y <= 0 || cycle.y >= maxY) {
+          died = true;
+        } else {
+          for (const other of cycles) {
+            if (other.isDead) continue;
+            // If checking self, ignore the most recent history points to avoid self-collision on turns
+            const skip = other.id === cycle.id ? 20 : 0;
+            for (let i = 0; i < other.history.length - skip; i++) {
+              const p = other.history[i];
+              if (Math.abs(p.x - cycle.x) < 2 && Math.abs(p.y - cycle.y) < 2) {
+                died = true;
+                break;
               }
+            }
+            if (died) break;
+          }
+        }
+
+        if (died) {
+          cycle.isDead = true;
+          cycle.respawnTimer = 180; // Wait 3 seconds before respawning
+          cycle.history = []; // Clear trail immediately
+          return;
+        }
+
+        // AI Decision Logic: Only allow turns exactly on grid intersections
+        if (cycle.x % CELL_SIZE === 0 && cycle.y % CELL_SIZE === 0) {
+          const possibleDirs = [
+            { vx: cycle.speed, vy: 0 },
+            { vx: -cycle.speed, vy: 0 },
+            { vx: 0, vy: cycle.speed },
+            { vx: 0, vy: -cycle.speed }
+          ].filter(d => !(d.vx === -cycle.vx && d.vy === -cycle.vy)); // Don't reverse
+
+          // Score each direction based on how far it can go safely
+          const scores = possibleDirs.map(dir => {
+            let score = 0;
+            let cx = cycle.x;
+            let cy = cycle.y;
+            while (true) {
+              cx += Math.sign(dir.vx) * CELL_SIZE;
+              cy += Math.sign(dir.vy) * CELL_SIZE;
+              if (cx <= 0 || cx >= maxX || cy <= 0 || cy >= maxY) break;
+              if (occupiedGrid.has(`${Math.floor(cx / CELL_SIZE)},${Math.floor(cy / CELL_SIZE)}`)) break;
+              score++;
+              if (score > 15) break; // Max lookahead
+            }
+            return { dir, score };
+          });
+
+          const maxScore = Math.max(...scores.map(s => s.score));
+          const bestOptions = scores.filter(s => s.score === maxScore);
+          const straightOption = scores.find(s => s.dir.vx === cycle.vx && s.dir.vy === cycle.vy);
+
+          if (maxScore === 0) {
+            // Trapped! Just pick a random direction and die next frame
+            const chosen = possibleDirs[Math.floor(Math.random() * possibleDirs.length)];
+            cycle.vx = chosen.vx;
+            cycle.vy = chosen.vy;
+          } else {
+            // If going straight is safe enough, prefer it to avoid jittery movement
+            if (straightOption && straightOption.score > 2 && Math.random() < 0.85) {
+              // Keep going straight
             } else {
-              // Dead end (corner), turn around
-              cycle.vx *= -1;
-              cycle.vy *= -1;
+              // Pick a random safe direction (this naturally creates cut-offs and traps)
+              const chosen = bestOptions[Math.floor(Math.random() * bestOptions.length)];
+              cycle.vx = chosen.dir.vx;
+              cycle.vy = chosen.dir.vy;
             }
           }
         }
 
         // Draw the fading trail
-        if (cycle.history.length > 1) {
+        if (!cycle.isDead && cycle.history.length > 1) {
           ctx.lineCap = 'round';
           ctx.lineJoin = 'round';
-          ctx.lineWidth = 2;
-          ctx.shadowBlur = 0; // No shadow blur on the tail to keep it thin and clean
 
           // Draw segment by segment to create a fade-out effect
           for (let i = 1; i < cycle.history.length; i++) {
@@ -170,8 +198,17 @@ export default function NeuralBackground() {
             ctx.moveTo(cycle.history[i - 1].x, cycle.history[i - 1].y);
             ctx.lineTo(cycle.history[i].x, cycle.history[i].y);
             ctx.strokeStyle = cycle.color;
-            // Non-linear fade so the head stays bright and the tail fades smoothly
-            ctx.globalAlpha = Math.pow(i / cycle.history.length, 1.5); 
+            
+            const alpha = i / cycle.history.length;
+            
+            // Outer soft glow (simulated without shadowBlur to avoid fat overlap)
+            ctx.globalAlpha = alpha * 0.4;
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            
+            // Inner bright core
+            ctx.globalAlpha = alpha; 
+            ctx.lineWidth = 1.5;
             ctx.stroke();
           }
           ctx.globalAlpha = 1.0;
@@ -215,7 +252,7 @@ export default function NeuralBackground() {
       {/* Tron Canvas (Draws the light cycles exactly on the grid lines) */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0"
+        className="absolute inset-0 mix-blend-screen opacity-80"
       />
 
       {/* Spotlight grid (brighter, masked by mouse position) */}

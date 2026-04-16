@@ -76,6 +76,9 @@ export default function App() {
                       src={`${import.meta.env.BASE_URL}testmu-logo-white.png`}
                       alt="TestMu AI logo"
                       className="h-10 w-auto border-0 ring-0 outline-none shadow-none sm:h-12 md:h-14"
+                      width={160}
+                      height={56}
+                      decoding="async"
                     />
                   </span>
                 </div>
@@ -88,6 +91,10 @@ export default function App() {
                     alt="Sri Harsha portrait"
                     className="h-full w-full object-cover"
                     loading="eager"
+                    fetchPriority="high"
+                    decoding="async"
+                    width={800}
+                    height={1000}
                   />
                 </div>
               </div>

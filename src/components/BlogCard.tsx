@@ -100,11 +100,11 @@ function CardInner({ post }: BlogCardProps) {
         )}
 
         <div className="text-xs uppercase tracking-widest text-[--color-muted]">{metaLine}</div>
-        <h3 className="mt-3 text-lg font-semibold leading-snug transition group-hover:text-[--color-secondary]">
+        <h3 className="mt-3 text-lg font-semibold leading-snug text-[--color-secondary] transition group-hover:text-sky-300">
           {frontmatter.title}
         </h3>
         {frontmatter.excerpt && (
-          <p className="mt-2 line-clamp-3 text-sm text-[--color-accent]">{frontmatter.excerpt}</p>
+          <p className="mt-2 line-clamp-3 text-sm text-[--color-body]">{frontmatter.excerpt}</p>
         )}
 
         <div className="mt-auto pt-5 text-sm text-[--color-secondary]">

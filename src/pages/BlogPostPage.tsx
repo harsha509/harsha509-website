@@ -94,7 +94,7 @@ export default function BlogPostPage() {
                   .filter(Boolean)
                   .join(' · ')}
               </div>
-              <h1 className="mt-4 font-[var(--font-heading)] text-3xl md:text-5xl font-extrabold leading-tight tracking-tight">
+              <h1 className="mt-4 font-[var(--font-heading)] text-3xl md:text-5xl font-extrabold leading-tight tracking-tight text-[--color-secondary]">
                 {frontmatter.title}
               </h1>
               {frontmatter.excerpt && (

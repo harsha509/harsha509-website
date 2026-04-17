@@ -37,8 +37,16 @@ function PublisherBadge({ url, publisher }: { url: string; publisher: string }) 
   );
 }
 
+function DraftBadge() {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full border border-amber-400/40 bg-amber-400/10 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-amber-300">
+      Draft
+    </span>
+  );
+}
+
 function CardInner({ post }: BlogCardProps) {
-  const { frontmatter, isExternal } = post;
+  const { frontmatter, isExternal, isDraft } = post;
   const metaLine = [
     frontmatter.category,
     formatBlogDate(frontmatter.date),
@@ -48,7 +56,13 @@ function CardInner({ post }: BlogCardProps) {
     .join(' · ');
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-[--color-border] bg-[--color-card-bg] shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <article
+      className={`group flex h-full flex-col overflow-hidden rounded-xl border shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${
+        isDraft
+          ? 'border-amber-400/30 bg-amber-400/[0.03]'
+          : 'border-[--color-border] bg-[--color-card-bg]'
+      }`}
+    >
       {frontmatter.cover && (
         <div className="relative aspect-[16/10] overflow-hidden bg-black/30">
           <img
@@ -58,6 +72,9 @@ function CardInner({ post }: BlogCardProps) {
             decoding="async"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           />
+          <div className="absolute left-3 top-3 flex flex-col items-start gap-2">
+            {isDraft && <DraftBadge />}
+          </div>
           {isExternal && frontmatter.external && (
             <div className="absolute right-3 top-3">
               <PublisherBadge
@@ -70,12 +87,15 @@ function CardInner({ post }: BlogCardProps) {
       )}
 
       <div className="flex flex-1 flex-col p-5">
-        {!frontmatter.cover && isExternal && frontmatter.external && (
-          <div className="mb-3">
-            <PublisherBadge
-              url={frontmatter.external.url}
-              publisher={frontmatter.external.publisher}
-            />
+        {(isDraft || (!frontmatter.cover && isExternal && frontmatter.external)) && (
+          <div className="mb-3 flex flex-wrap gap-2">
+            {isDraft && !frontmatter.cover && <DraftBadge />}
+            {!frontmatter.cover && isExternal && frontmatter.external && (
+              <PublisherBadge
+                url={frontmatter.external.url}
+                publisher={frontmatter.external.publisher}
+              />
+            )}
           </div>
         )}
 

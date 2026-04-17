@@ -69,6 +69,21 @@ export default function BlogPostPage() {
               Back to blog
             </Link>
 
+            {post.isDraft && (
+              <div
+                role="status"
+                className="mt-6 flex items-start gap-3 rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm text-amber-200"
+              >
+                <span className="inline-flex items-center rounded-full bg-amber-400/20 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-amber-200">
+                  Draft
+                </span>
+                <span>
+                  This post is a draft — it's hidden from the production build and only visible in
+                  local dev.
+                </span>
+              </div>
+            )}
+
             <header className="mt-8">
               <div className="text-xs uppercase tracking-widest text-[--color-muted]">
                 {[
